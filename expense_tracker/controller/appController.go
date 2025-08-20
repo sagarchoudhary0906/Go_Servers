@@ -5,6 +5,8 @@ import (
 	"log"
 )
 
+const GET_USER_ID = "guid"
+
 func AppController(req string) {
 	var m map[string]json.RawMessage
 	log.Println("AppController: start")
@@ -18,5 +20,7 @@ func AppController(req string) {
 	d := string(m["d"])
 	log.Printf("AppController: c=%q a=%q d=%v", c, a, d)
 
-	log.Printf("AppController: c=%q a=%q d=%v", c, a, d)
+	if a == GET_USER_ID {
+		IdController(d)
+	}
 }
