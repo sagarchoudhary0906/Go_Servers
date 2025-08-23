@@ -15,10 +15,15 @@ func AppController(req string) {
 		return
 	}
 
-	c := string(m["c"])
-	a := string(m["a"])
-	d := string(m["d"])
-	log.Printf("AppController: c=%q a=%q d=%v", c, a, d)
+	var a string
+	if err := json.Unmarshal(m["a"], &a); err != nil {
+		// handle error
+	}
+	var c string
+	var d map[string]string
+	_ = json.Unmarshal(m["c"], &c)
+	_ = json.Unmarshal(m["d"], &d)
+	log.Printf("AppController: c=%q a=%q d=%v  res = %v", c, a, d, a == GET_USER_ID)
 
 	if a == GET_USER_ID {
 		IdController(d)

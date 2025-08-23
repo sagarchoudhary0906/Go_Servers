@@ -3,6 +3,7 @@ package main
 import (
 	// "encoding/json"
 	mainController "expense_tracker/controller"
+	idgenerator "expense_tracker/idGenrateContoller"
 
 	"database/sql"
 
@@ -21,12 +22,16 @@ func main() {
 		log.Fatalf("main: failed to open postgres: %v", err) // Fail fast if DB is unreachable/misconfigured
 	}
 	defer db.Close() // Ensure pool is closed on program exit (graceful resource cleanup)
+	mainController.DB = db
+
+	// Initialize redis
+	idgenerator.InitRedis()
 
 	// This is handler for the request
 	mux := http.NewServeMux()
 	mux.HandleFunc("/expense", RequestHandler)
 
-	// // Check DB connectivity
+	// Check DB connectivity
 	// mux.HandleFunc("/db/ping", func(w http.ResponseWriter, r *http.Request) {
 	// 	var one int
 	// 	if err := db.QueryRow("SELECT 1").Scan(&one); err != nil {
